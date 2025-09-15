@@ -35,7 +35,7 @@ Provide your analysis in JSON format with:
 4. "recommendations": Array of specific improvements`;
 
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'gpt-5-chat-latest',
       messages: [
         { role: 'system', content: systemPrompt },
         { role: 'user', content: `Analyze this post: "${post}"` }
