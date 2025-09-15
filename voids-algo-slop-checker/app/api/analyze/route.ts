@@ -13,6 +13,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid post content' }, { status: 400 });
     }
 
+    if (post.length > 280) {
+      return NextResponse.json({ error: 'Post exceeds 280 character limit' }, { status: 400 });
+    }
+
     const systemPrompt = `You are an X (Twitter) algorithm expert. Analyze the following post and rate it based on these criteria:
 
 NEGATIVE FACTORS (increase slop score):

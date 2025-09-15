@@ -105,42 +105,27 @@ export default function PostAnalyzer() {
 
       <div className="relative z-10 max-w-4xl mx-auto p-4 sm:p-6 pt-8 sm:pt-12">
         <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/20 p-4 sm:p-8">
-          {/* Header with centered title and floating X logo */}
+          {/* Header with title and X logo */}
           <div className="mb-6 sm:mb-8">
-            <div className="relative">
-              {/* X Logo - positioned absolutely on larger screens, inline on mobile */}
-              <div className="absolute right-0 top-0 hidden sm:block">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-3 mb-3">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent inline-flex items-center gap-2 sm:gap-3">
+                  <span className="text-4xl sm:text-5xl lg:text-6xl animate-spin-slow">🌀</span>
+                  <span className="leading-tight">Voids Algo<br className="sm:hidden" /> Slop Checker</span>
+                </h1>
+                {/* X Logo next to title */}
                 <div className="relative group cursor-pointer">
                   <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg blur-md group-hover:blur-lg transition-all opacity-75"></div>
-                  <div className="relative bg-black/50 backdrop-blur-sm rounded-lg p-3 border border-purple-500/30 group-hover:border-purple-400/50 transition-all">
-                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                  <div className="relative bg-black/50 backdrop-blur-sm rounded-lg p-2 sm:p-2.5 border border-purple-500/30 group-hover:border-purple-400/50 transition-all">
+                    <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                     </svg>
                   </div>
                 </div>
               </div>
-
-              {/* Title - centered */}
-              <div className="text-center">
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent inline-flex items-center justify-center gap-2 sm:gap-3">
-                  <span className="text-4xl sm:text-5xl lg:text-6xl animate-spin-slow">🌀</span>
-                  <span className="leading-tight">Voids Algo<br className="sm:hidden" /> Slop Checker</span>
-                </h1>
-                <p className="text-gray-400 mt-2 text-sm sm:text-base">
-                  Check if your post will get deboosted by the algorithm
-                </p>
-                {/* X Logo for mobile */}
-                <div className="sm:hidden mt-4 flex justify-center">
-                  <div className="relative group">
-                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg blur-md opacity-75"></div>
-                    <div className="relative bg-black/50 backdrop-blur-sm rounded-lg p-2 border border-purple-500/30">
-                      <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <p className="text-gray-400 text-sm sm:text-base">
+                Check if your post will get deboosted by the algorithm
+              </p>
             </div>
           </div>
 
