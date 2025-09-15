@@ -347,7 +347,7 @@ export default function PostAnalyzer() {
                   />
                 </div>
                 <div className="text-center">
-                  <p className="text-xs sm:text-sm text-gray-400 group-hover:text-purple-400 transition-colors font-medium">
+                  <p className="text-xs sm:text-sm text-fuchsia-300 group-hover:text-fuchsia-200 transition-colors font-medium">
                     @JasonBotterill3
                   </p>
                 </div>
@@ -377,7 +377,7 @@ export default function PostAnalyzer() {
                   />
                 </div>
                 <div className="text-center">
-                  <p className="text-xs sm:text-sm text-gray-400 group-hover:text-purple-400 transition-colors font-medium">
+                  <p className="text-xs sm:text-sm text-sky-300 group-hover:text-sky-200 transition-colors font-medium">
                     @VoidStateKate
                   </p>
                   {/* Removed role label per request */}
@@ -385,6 +385,12 @@ export default function PostAnalyzer() {
               </div>
             </a>
           </div>
+        </div>
+
+        {/* Disclaimer */}
+        <div className="mt-6 text-center text-xs sm:text-sm text-gray-400">
+          Factors are taken from my look at X’s open‑source algorithm, but
+          this tool estimates a score based on those factors and does not compute the official score.
         </div>
       </div>
     </div>
