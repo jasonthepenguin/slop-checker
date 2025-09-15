@@ -96,38 +96,52 @@ export default function PostAnalyzer() {
         <div className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{ top: '40%', left: '5%', animationDelay: '1.3s', opacity: 0.5 }} />
         <div className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{ top: '55%', left: '75%', animationDelay: '1.8s', opacity: 0.7 }} />
         <div className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{ top: '95%', left: '40%', animationDelay: '2.3s', opacity: 0.8 }} />
-        <div className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{ top: '35%', left: '65%', animationDelay: '2.8s', opacity: 0.6 }} />
-        <div className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{ top: '65%', left: '15%', animationDelay: '3.3s', opacity: 0.9 }} />
-        <div className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{ top: '8%', left: '35%', animationDelay: '3.8s', opacity: 0.7 }} />
-        <div className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{ top: '75%', left: '95%', animationDelay: '4.3s', opacity: 0.5 }} />
-        <div className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{ top: '50%', left: '55%', animationDelay: '4.8s', opacity: 0.8 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '12%', left: '70%', animationDelay: '0.2s', opacity: 0.4 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '88%', left: '30%', animationDelay: '0.7s', opacity: 0.5 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '22%', left: '92%', animationDelay: '1.2s', opacity: 0.6 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '68%', left: '8%', animationDelay: '1.7s', opacity: 0.4 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '42%', left: '48%', animationDelay: '2.2s', opacity: 0.5 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '78%', left: '62%', animationDelay: '2.7s', opacity: 0.6 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '18%', left: '22%', animationDelay: '3.2s', opacity: 0.4 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '92%', left: '78%', animationDelay: '3.7s', opacity: 0.5 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '38%', left: '88%', animationDelay: '4.2s', opacity: 0.6 }} />
-        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '58%', left: '38%', animationDelay: '4.7s', opacity: 0.4 }} />
+        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '35%', left: '65%', animationDelay: '2.8s', opacity: 0.6 }} />
+        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '65%', left: '15%', animationDelay: '3.3s', opacity: 0.9 }} />
+        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '8%', left: '35%', animationDelay: '3.8s', opacity: 0.7 }} />
+        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '75%', left: '95%', animationDelay: '4.3s', opacity: 0.5 }} />
+        <div className="absolute w-0.5 h-0.5 bg-white rounded-full animate-pulse" style={{ top: '50%', left: '55%', animationDelay: '4.8s', opacity: 0.8 }} />
       </div>
 
-      <div className="relative z-10 max-w-3xl mx-auto p-6 pt-12">
-        <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/20 p-8">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent flex items-center gap-3">
-                <span className="text-5xl">🌀</span>
-                Voids Algo Slop Checker
-              </h1>
-              <p className="text-gray-400 mt-2">
-                Check if your post will get deboosted by the algorithm
-              </p>
+      <div className="relative z-10 max-w-4xl mx-auto p-4 sm:p-6 pt-8 sm:pt-12">
+        <div className="bg-slate-900/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-purple-500/20 p-4 sm:p-8">
+          {/* Header with centered title and floating X logo */}
+          <div className="mb-6 sm:mb-8">
+            <div className="relative">
+              {/* X Logo - positioned absolutely on larger screens, inline on mobile */}
+              <div className="absolute right-0 top-0 hidden sm:block">
+                <div className="relative group cursor-pointer">
+                  <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg blur-md group-hover:blur-lg transition-all opacity-75"></div>
+                  <div className="relative bg-black/50 backdrop-blur-sm rounded-lg p-3 border border-purple-500/30 group-hover:border-purple-400/50 transition-all">
+                    <svg className="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              {/* Title - centered */}
+              <div className="text-center">
+                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 bg-clip-text text-transparent inline-flex items-center justify-center gap-2 sm:gap-3">
+                  <span className="text-4xl sm:text-5xl lg:text-6xl animate-spin-slow">🌀</span>
+                  <span className="leading-tight">Voids Algo<br className="sm:hidden" /> Slop Checker</span>
+                </h1>
+                <p className="text-gray-400 mt-2 text-sm sm:text-base">
+                  Check if your post will get deboosted by the algorithm
+                </p>
+                {/* X Logo for mobile */}
+                <div className="sm:hidden mt-4 flex justify-center">
+                  <div className="relative group">
+                    <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg blur-md opacity-75"></div>
+                    <div className="relative bg-black/50 backdrop-blur-sm rounded-lg p-2 border border-purple-500/30">
+                      <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <svg className="w-12 h-12 text-white/90" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>
           </div>
 
           <div className="space-y-4">
@@ -138,37 +152,37 @@ export default function PostAnalyzer() {
               <textarea
                 id="post"
                 rows={6}
-                className="w-full px-4 py-3 bg-slate-800/50 border border-purple-500/30 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none text-gray-100 placeholder-gray-500"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-slate-800/50 border border-purple-500/30 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none text-gray-100 placeholder-gray-500 text-sm sm:text-base"
                 placeholder="Enter your post here..."
                 value={post}
                 onChange={(e) => setPost(e.target.value)}
                 maxLength={280}
               />
-              <div className="text-sm text-purple-400 mt-1 text-right">
+              <div className="text-xs sm:text-sm text-purple-400 mt-1 text-right">
                 {post.length}/280 characters
               </div>
             </div>
 
             {error && (
-              <div className="bg-red-950/50 border border-red-500/30 text-red-400 px-4 py-3 rounded-lg flex items-center gap-2">
-                <AlertCircle className="h-5 w-5" />
-                {error}
+              <div className="bg-red-950/50 border border-red-500/30 text-red-400 px-3 sm:px-4 py-2 sm:py-3 rounded-lg flex items-center gap-2 text-sm sm:text-base">
+                <AlertCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                <span>{error}</span>
               </div>
             )}
 
             <button
               onClick={analyzePost}
               disabled={loading || !post.trim()}
-              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg"
+              className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 sm:py-3 px-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg text-sm sm:text-base"
             >
               {loading ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
                   Analyzing...
                 </>
               ) : (
                 <>
-                  <Sparkles className="h-5 w-5" />
+                  <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
                   Analyze Post
                 </>
               )}
@@ -176,11 +190,11 @@ export default function PostAnalyzer() {
           </div>
 
           {result && (
-            <div className="mt-8 space-y-6">
-              <div className={`p-6 rounded-lg border ${getScoreBackground(result.slopScore)}`}>
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-semibold text-gray-100">Algo Slop Score</h2>
-                  <div className={`text-5xl font-bold ${getScoreColor(result.slopScore)}`}>
+            <div className="mt-6 sm:mt-8 space-y-4 sm:space-y-6">
+              <div className={`p-4 sm:p-6 rounded-lg border ${getScoreBackground(result.slopScore)}`}>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4">
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-100">Algo Slop Score</h2>
+                  <div className={`text-4xl sm:text-5xl font-bold ${getScoreColor(result.slopScore)}`}>
                     {result.slopScore}
                   </div>
                 </div>
@@ -196,51 +210,51 @@ export default function PostAnalyzer() {
                     style={{ width: `${result.slopScore}%` }}
                   />
                 </div>
-                <p className="mt-4 text-gray-300">{result.summary}</p>
+                <p className="mt-3 sm:mt-4 text-gray-300 text-sm sm:text-base">{result.summary}</p>
               </div>
 
-              <div className="bg-slate-800/30 border border-purple-500/20 rounded-lg p-6">
-                <h3 className="text-lg font-semibold mb-4 text-purple-300">Factors Detected</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="bg-slate-800/30 border border-purple-500/20 rounded-lg p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-purple-300">Factors Detected</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                   {result.factors.allCaps && (
-                    <div className="flex items-center gap-2 text-red-400">
-                      <XCircle className="h-5 w-5" />
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                       <span>All caps shouting</span>
                     </div>
                   )}
                   {result.factors.spam && (
-                    <div className="flex items-center gap-2 text-red-400">
-                      <XCircle className="h-5 w-5" />
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                       <span>Spam or low quality</span>
                     </div>
                   )}
                   {result.factors.offensive && (
-                    <div className="flex items-center gap-2 text-red-400">
-                      <XCircle className="h-5 w-5" />
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                       <span>Offensive content</span>
                     </div>
                   )}
                   {result.factors.hasLinks && (
-                    <div className="flex items-center gap-2 text-red-400">
-                      <XCircle className="h-5 w-5" />
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                       <span>Contains links</span>
                     </div>
                   )}
                   {result.factors.nsfw && (
-                    <div className="flex items-center gap-2 text-red-400">
-                      <XCircle className="h-5 w-5" />
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                       <span>NSFW content</span>
                     </div>
                   )}
                   {result.factors.promotional && (
-                    <div className="flex items-center gap-2 text-red-400">
-                      <XCircle className="h-5 w-5" />
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                       <span>Overly promotional</span>
                     </div>
                   )}
                   {result.factors.informative && (
-                    <div className="flex items-center gap-2 text-green-400">
-                      <CheckCircle className="h-5 w-5" />
+                    <div className="flex items-center gap-2 text-green-400 text-sm sm:text-base">
+                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                       <span>Informative content</span>
                     </div>
                   )}
@@ -248,15 +262,15 @@ export default function PostAnalyzer() {
               </div>
 
               {result.recommendations && result.recommendations.length > 0 && (
-                <div className="bg-blue-950/30 border border-blue-500/30 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-blue-300">
-                    <TrendingUp className="h-5 w-5" />
+                <div className="bg-blue-950/30 border border-blue-500/30 rounded-lg p-4 sm:p-6">
+                  <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 flex items-center gap-2 text-blue-300">
+                    <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5" />
                     Recommendations
                   </h3>
                   <ul className="space-y-2">
                     {result.recommendations.map((rec, index) => (
-                      <li key={index} className="flex items-start gap-2">
-                        <span className="text-blue-400 mt-1">•</span>
+                      <li key={index} className="flex items-start gap-2 text-sm sm:text-base">
+                        <span className="text-blue-400 mt-0.5 sm:mt-1">•</span>
                         <span className="text-gray-300">{rec}</span>
                       </li>
                     ))}
@@ -267,41 +281,75 @@ export default function PostAnalyzer() {
           )}
         </div>
 
-        {/* Credits */}
-        <div className="mt-8 text-center">
-          <p className="text-purple-400 mb-4">Created by</p>
-          <div className="flex justify-center items-center gap-8">
+        {/* Enhanced Credits Section */}
+        <div className="mt-8 sm:mt-12">
+          <div className="relative">
+            {/* Decorative line */}
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-purple-500/20"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <span className="bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 px-4 text-purple-400 text-sm">
+                Created by
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-6 flex justify-center items-center gap-6 sm:gap-12">
             <a
               href="https://x.com/JasonBotterill3"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 group"
+              className="group relative"
             >
-              <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-400 transition-all">
-                <Image
-                  src="/jb.jpg"
-                  alt="Jason Botterill"
-                  fill
-                  className="object-cover"
-                />
+              <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-md opacity-0 group-hover:opacity-75 transition-opacity duration-300"></div>
+              <div className="relative flex flex-col items-center gap-2">
+                <div className="relative w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-400 transition-all group-hover:scale-110 duration-300">
+                  <Image
+                    src="/jb.jpg"
+                    alt="Jason Botterill"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="text-center">
+                  <p className="text-xs sm:text-sm text-gray-400 group-hover:text-purple-400 transition-colors font-medium">
+                    @JasonBotterill3
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">Co-Creator</p>
+                </div>
               </div>
-              <span className="text-gray-400 group-hover:text-purple-400 transition-colors">@JasonBotterill3</span>
             </a>
+
+            {/* Cosmic connector */}
+            <div className="relative">
+              <div className="w-8 sm:w-12 h-0.5 bg-gradient-to-r from-purple-500/50 via-pink-500/50 to-blue-500/50"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            </div>
+
             <a
               href="https://x.com/VoidStateKate"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-2 group"
+              className="group relative"
             >
-              <div className="relative w-16 h-16 rounded-full overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-400 transition-all">
-                <Image
-                  src="/void.jpg"
-                  alt="VoidStateKate"
-                  fill
-                  className="object-cover"
-                />
+              <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-md opacity-0 group-hover:opacity-75 transition-opacity duration-300"></div>
+              <div className="relative flex flex-col items-center gap-2">
+                <div className="relative w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-400 transition-all group-hover:scale-110 duration-300">
+                  <Image
+                    src="/void.jpg"
+                    alt="VoidStateKate"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="text-center">
+                  <p className="text-xs sm:text-sm text-gray-400 group-hover:text-purple-400 transition-colors font-medium">
+                    @VoidStateKate
+                  </p>
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">Co-Creator</p>
+                </div>
               </div>
-              <span className="text-gray-400 group-hover:text-purple-400 transition-colors">@VoidStateKate</span>
             </a>
           </div>
         </div>
