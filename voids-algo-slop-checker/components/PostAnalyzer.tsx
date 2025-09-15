@@ -350,7 +350,6 @@ export default function PostAnalyzer() {
                   <p className="text-xs sm:text-sm text-gray-400 group-hover:text-purple-400 transition-colors font-medium">
                     @JasonBotterill3
                   </p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">Co-Creator</p>
                 </div>
               </div>
             </a>
@@ -381,7 +380,7 @@ export default function PostAnalyzer() {
                   <p className="text-xs sm:text-sm text-gray-400 group-hover:text-purple-400 transition-colors font-medium">
                     @VoidStateKate
                   </p>
-                  <p className="text-[10px] sm:text-xs text-gray-500 mt-0.5">Co-Creator</p>
+                  {/* Removed role label per request */}
                 </div>
               </div>
             </a>
