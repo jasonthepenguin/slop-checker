@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
+import { checkRateLimit } from '@/lib/rateLimit';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -7,6 +8,26 @@ const openai = new OpenAI({
 
 export async function POST(request: NextRequest) {
   try {
+    const rateLimitResult = await checkRateLimit(request);
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        {
+          error: 'Too many requests. Please wait 30 seconds between analyses.',
+          retryAfter: rateLimitResult.retryAfter
+        },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': rateLimitResult.limit.toString(),
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': new Date(rateLimitResult.reset).toISOString(),
+            'Retry-After': rateLimitResult.retryAfter.toString(),
+          }
+        }
+      );
+    }
+
     const { post } = await request.json();
 
     if (!post || typeof post !== 'string') {

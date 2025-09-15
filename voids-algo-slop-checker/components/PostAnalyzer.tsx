@@ -44,12 +44,19 @@ export default function PostAnalyzer() {
         body: JSON.stringify({ post }),
       });
 
-      if (!response.ok) {
-        throw new Error('Analysis failed');
-      }
-
       const data = await response.json();
-      setResult(data);
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          const retryAfter = data.retryAfter || 30;
+          setError(`Too many requests. Please wait ${retryAfter} seconds before trying again.`);
+          setResult(null);
+        } else {
+          throw new Error(data.error || 'Analysis failed');
+        }
+      } else {
+        setResult(data);
+      }
     } catch (err) {
       setError('Failed to analyze post. Please try again.');
       console.error(err);
