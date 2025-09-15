@@ -28,11 +28,21 @@ POSITIVE FACTORS (decrease slop score):
 - Thoughtful discussion or insights
 - Original ideas or perspectives
 
-Provide your analysis in JSON format with:
-1. "slopScore": A number from 0-100 (0 = excellent, 100 = terrible algo slop)
-2. "factors": An object with boolean values for each factor checked
-3. "summary": A brief explanation of the score
-4. "recommendations": Array of specific improvements`;
+Provide your analysis in JSON format with EXACTLY this structure:
+{
+  "slopScore": number from 0-100 (0 = excellent, 100 = terrible algo slop),
+  "factors": {
+    "allCaps": boolean (true if post contains all caps shouting),
+    "spam": boolean (true if spam/low-quality/excessive hashtags),
+    "offensive": boolean (true if offensive/toxic/aggressive),
+    "hasLinks": boolean (true if contains external links),
+    "nsfw": boolean (true if NSFW or graphic content),
+    "promotional": boolean (true if overly promotional/sales-focused),
+    "informative": boolean (true if niche/informative/educational)
+  },
+  "summary": "Brief explanation of the score",
+  "recommendations": ["Array of specific improvements"]
+}`;
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-5-chat-latest',
