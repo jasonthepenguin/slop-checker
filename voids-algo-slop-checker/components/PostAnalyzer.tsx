@@ -9,11 +9,17 @@ interface AnalysisResult {
   factors: {
     allCaps: boolean;
     spam: boolean;
+    tooManyHashtags: boolean;
+    tooManyMentions: boolean;
     offensive: boolean;
     hasLinks: boolean;
     nsfw: boolean;
     promotional: boolean;
+    privateInfo: boolean;
+    excessiveWhitespace: boolean;
+    veryShortLowEffort: boolean;
     informative: boolean;
+    encouragesEngagement: boolean;
   };
   summary: string;
   recommendations: string[];
@@ -220,6 +226,18 @@ export default function PostAnalyzer() {
                       <span>Spam or low quality</span>
                     </div>
                   )}
+                  {result.factors.tooManyHashtags && (
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span>Too many hashtags</span>
+                    </div>
+                  )}
+                  {result.factors.tooManyMentions && (
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span>Too many @mentions</span>
+                    </div>
+                  )}
                   {result.factors.offensive && (
                     <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
                       <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
@@ -244,10 +262,34 @@ export default function PostAnalyzer() {
                       <span>Overly promotional</span>
                     </div>
                   )}
+                  {result.factors.privateInfo && (
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span>Private information exposure</span>
+                    </div>
+                  )}
+                  {result.factors.excessiveWhitespace && (
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span>Excessive whitespace/formatting</span>
+                    </div>
+                  )}
+                  {result.factors.veryShortLowEffort && (
+                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
+                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span>Very short, low-effort post</span>
+                    </div>
+                  )}
                   {result.factors.informative && (
                     <div className="flex items-center gap-2 text-green-400 text-sm sm:text-base">
                       <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
                       <span>Informative content</span>
+                    </div>
+                  )}
+                  {result.factors.encouragesEngagement && (
+                    <div className="flex items-center gap-2 text-green-400 text-sm sm:text-base">
+                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span>Encourages meaningful engagement</span>
                     </div>
                   )}
                 </div>
