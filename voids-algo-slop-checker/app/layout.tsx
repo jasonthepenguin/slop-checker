@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Voids Algo Slop Checker",
+  title: "Voids Slop Checker",
   description: "Check if your X post will get deboosted by the algorithm",
 };
 
