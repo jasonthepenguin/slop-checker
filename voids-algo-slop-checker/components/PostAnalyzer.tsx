@@ -77,14 +77,15 @@ const normalizeResult = (raw: any): AnalysisResult => {
 };
 
 export default function PostAnalyzer() {
+  const [displayName, setDisplayName] = useState('');
   const [post, setPost] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState('');
 
   const analyzePost = async () => {
-    if (!post.trim()) {
-      setError('Please enter a post to analyze');
+    if (!displayName.trim() || !post.trim()) {
+      setError('Please enter both a display name and a post to analyze');
       return;
     }
 
@@ -98,7 +99,7 @@ export default function PostAnalyzer() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ post }),
+        body: JSON.stringify({ post, displayName }),
       });
 
       const raw = await response.json();
@@ -222,6 +223,21 @@ export default function PostAnalyzer() {
 
           <div className="space-y-4">
             <div>
+              <label htmlFor="displayName" className="block text-sm font-medium text-purple-300 mb-2">
+                Your X Display Name
+              </label>
+              <input
+                id="displayName"
+                type="text"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 bg-slate-800/50 border border-purple-500/30 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-gray-100 placeholder-gray-500 text-sm sm:text-base"
+                placeholder="Enter your display name..."
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                maxLength={50}
+              />
+            </div>
+
+            <div>
               <label htmlFor="post" className="block text-sm font-medium text-purple-300 mb-2">
                 Your Post
               </label>
@@ -248,7 +264,7 @@ export default function PostAnalyzer() {
 
             <button
               onClick={analyzePost}
-              disabled={loading || !post.trim()}
+              disabled={loading || !displayName.trim() || !post.trim()}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 sm:py-3 px-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg text-sm sm:text-base"
             >
               {loading ? (

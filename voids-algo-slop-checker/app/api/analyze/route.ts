@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { post } = await request.json();
+    const { post, displayName } = await request.json();
 
     if (!post || typeof post !== 'string') {
       return NextResponse.json({ error: 'Invalid post content' }, { status: 400 });
@@ -38,7 +38,25 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Post exceeds 280 character limit' }, { status: 400 });
     }
 
-    const systemPrompt = `You are an X (Twitter) algorithm expert. Analyze the following post and rate it based on these criteria:
+    if (!displayName || typeof displayName !== 'string') {
+      return NextResponse.json({ error: 'Invalid display name' }, { status: 400 });
+    }
+
+    if (!displayName.trim()) {
+      return NextResponse.json({ error: 'Display name is required' }, { status: 400 });
+    }
+
+    if (displayName.length > 50) {
+      return NextResponse.json({ error: 'Display name exceeds 50 character limit' }, { status: 400 });
+    }
+
+    const systemPrompt = `You are an X (Twitter) algorithm expert. Analyze the provided JSON payload and rate the content based on these criteria. The payload has this shape:
+{
+  "post": "<body of the post>",
+  "displayName": "<author's display name>"
+}
+
+Apply the rules below considering BOTH the post body and the supplied display name:
 
 TEXT FORMATTING & READABILITY (negative if present):
 - All caps "shouting" text (except clear acronyms)
@@ -107,7 +125,7 @@ Provide your analysis in JSON format with EXACTLY this structure:
       model: 'gpt-5-chat-latest',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: `Analyze this post: "${post}"` }
+        { role: 'user', content: JSON.stringify({ post, displayName }) }
       ],
       response_format: { type: 'json_object' },
       temperature: 0.3,
