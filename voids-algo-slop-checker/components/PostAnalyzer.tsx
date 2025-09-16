@@ -12,18 +12,69 @@ interface AnalysisResult {
     tooManyHashtags: boolean;
     tooManyMentions: boolean;
     offensive: boolean;
+    offensiveDisplayName: boolean;
     hasLinks: boolean;
     nsfw: boolean;
+    graphicViolence: boolean;
     promotional: boolean;
     privateInfo: boolean;
     excessiveWhitespace: boolean;
     veryShortLowEffort: boolean;
+    lengthExtremes: boolean;
+    readabilityIssues: boolean;
+    lowTokenEntropy: boolean;
+    slopAnnotation: boolean;
+    mediaOrCardHeavy: boolean;
     informative: boolean;
     encouragesEngagement: boolean;
   };
   summary: string;
   recommendations: string[];
 }
+
+type FactorKey = keyof AnalysisResult['factors'];
+
+const DEFAULT_FACTORS: AnalysisResult['factors'] = {
+  allCaps: false,
+  spam: false,
+  tooManyHashtags: false,
+  tooManyMentions: false,
+  offensive: false,
+  offensiveDisplayName: false,
+  hasLinks: false,
+  nsfw: false,
+  graphicViolence: false,
+  promotional: false,
+  privateInfo: false,
+  excessiveWhitespace: false,
+  veryShortLowEffort: false,
+  lengthExtremes: false,
+  readabilityIssues: false,
+  lowTokenEntropy: false,
+  slopAnnotation: false,
+  mediaOrCardHeavy: false,
+  informative: false,
+  encouragesEngagement: false,
+};
+
+const normalizeResult = (raw: any): AnalysisResult => {
+  const safeFactors =
+    raw && typeof raw === 'object' && 'factors' in raw && raw.factors && typeof raw.factors === 'object'
+      ? raw.factors
+      : {};
+
+  return {
+    slopScore: typeof raw?.slopScore === 'number' ? raw.slopScore : 0,
+    summary: typeof raw?.summary === 'string' ? raw.summary : '',
+    recommendations: Array.isArray(raw?.recommendations)
+      ? raw.recommendations.filter((item: unknown) => typeof item === 'string')
+      : [],
+    factors: {
+      ...DEFAULT_FACTORS,
+      ...safeFactors,
+    },
+  };
+};
 
 export default function PostAnalyzer() {
   const [post, setPost] = useState('');
@@ -50,18 +101,18 @@ export default function PostAnalyzer() {
         body: JSON.stringify({ post }),
       });
 
-      const data = await response.json();
+      const raw = await response.json();
 
       if (!response.ok) {
         if (response.status === 429) {
-          const retryAfter = data.retryAfter || 30;
+          const retryAfter = raw.retryAfter || 30;
           setError(`Too many requests. Please wait ${retryAfter} seconds before trying again.`);
           setResult(null);
         } else {
-          throw new Error(data.error || 'Analysis failed');
+          throw new Error(raw.error || 'Analysis failed');
         }
       } else {
-        setResult(data);
+        setResult(normalizeResult(raw));
       }
     } catch (err) {
       setError('Failed to analyze post. Please try again.');
@@ -82,6 +133,33 @@ export default function PostAnalyzer() {
     if (score < 60) return 'bg-yellow-900/30 border-yellow-500/30';
     return 'bg-red-900/30 border-red-500/30';
   };
+
+  const factorDetails: Array<{ key: FactorKey; label: string; sentiment: 'negative' | 'positive' }> = [
+    { key: 'allCaps', label: 'All caps shouting', sentiment: 'negative' },
+    { key: 'lengthExtremes', label: 'Length far outside optimal range', sentiment: 'negative' },
+    { key: 'readabilityIssues', label: 'Readability concerns', sentiment: 'negative' },
+    { key: 'lowTokenEntropy', label: 'Low vocabulary variety', sentiment: 'negative' },
+    { key: 'excessiveWhitespace', label: 'Excessive whitespace or odd formatting', sentiment: 'negative' },
+    { key: 'spam', label: 'Likely spam pattern', sentiment: 'negative' },
+    { key: 'slopAnnotation', label: 'High “slop” annotation', sentiment: 'negative' },
+    { key: 'tooManyHashtags', label: 'Too many hashtags or trends', sentiment: 'negative' },
+    { key: 'tooManyMentions', label: 'Too many @mentions', sentiment: 'negative' },
+    { key: 'hasLinks', label: 'Contains external link', sentiment: 'negative' },
+    { key: 'mediaOrCardHeavy', label: 'Heavy media/card footprint', sentiment: 'negative' },
+    { key: 'promotional', label: 'Overly promotional content', sentiment: 'negative' },
+    { key: 'veryShortLowEffort', label: 'Very short or low-effort post', sentiment: 'negative' },
+    { key: 'offensive', label: 'Offensive or aggressive language', sentiment: 'negative' },
+    { key: 'offensiveDisplayName', label: 'Offensive display name', sentiment: 'negative' },
+    { key: 'privateInfo', label: 'Private information exposure', sentiment: 'negative' },
+    { key: 'nsfw', label: 'NSFW or sexual content', sentiment: 'negative' },
+    { key: 'graphicViolence', label: 'Graphic gore or violence', sentiment: 'negative' },
+    { key: 'informative', label: 'Informative or educational content', sentiment: 'positive' },
+    { key: 'encouragesEngagement', label: 'Encourages meaningful engagement', sentiment: 'positive' },
+  ];
+
+  const activeFactors = result
+    ? factorDetails.filter(({ key }) => Boolean(result.factors?.[key]))
+    : [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-purple-950 to-slate-950 relative overflow-hidden">
@@ -214,84 +292,26 @@ export default function PostAnalyzer() {
               <div className="bg-slate-800/30 border border-purple-500/20 rounded-lg p-4 sm:p-6">
                 <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 text-purple-300">Factors Detected</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                  {result.factors.allCaps && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>All caps shouting</span>
+                  {activeFactors.length === 0 && (
+                    <div className="flex items-center gap-2 text-slate-300 text-sm sm:text-base">
+                      <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                      <span>No notable signals flagged.</span>
                     </div>
                   )}
-                  {result.factors.spam && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Spam or low quality</span>
-                    </div>
-                  )}
-                  {result.factors.tooManyHashtags && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Too many hashtags</span>
-                    </div>
-                  )}
-                  {result.factors.tooManyMentions && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Too many @mentions</span>
-                    </div>
-                  )}
-                  {result.factors.offensive && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Offensive content</span>
-                    </div>
-                  )}
-                  {result.factors.hasLinks && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Contains links</span>
-                    </div>
-                  )}
-                  {result.factors.nsfw && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>NSFW content</span>
-                    </div>
-                  )}
-                  {result.factors.promotional && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Overly promotional</span>
-                    </div>
-                  )}
-                  {result.factors.privateInfo && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Private information exposure</span>
-                    </div>
-                  )}
-                  {result.factors.excessiveWhitespace && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Excessive whitespace/formatting</span>
-                    </div>
-                  )}
-                  {result.factors.veryShortLowEffort && (
-                    <div className="flex items-center gap-2 text-red-400 text-sm sm:text-base">
-                      <XCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Very short, low-effort post</span>
-                    </div>
-                  )}
-                  {result.factors.informative && (
-                    <div className="flex items-center gap-2 text-green-400 text-sm sm:text-base">
-                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Informative content</span>
-                    </div>
-                  )}
-                  {result.factors.encouragesEngagement && (
-                    <div className="flex items-center gap-2 text-green-400 text-sm sm:text-base">
-                      <CheckCircle className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
-                      <span>Encourages meaningful engagement</span>
-                    </div>
-                  )}
+                  {activeFactors.map(({ key, label, sentiment }) => {
+                    const IconComponent = sentiment === 'positive' ? CheckCircle : XCircle;
+                    const colorClass = sentiment === 'positive' ? 'text-green-400' : 'text-red-400';
+
+                    return (
+                      <div
+                        key={key}
+                        className={`flex items-center gap-2 text-sm sm:text-base ${colorClass}`}
+                      >
+                        <IconComponent className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" />
+                        <span>{label}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
