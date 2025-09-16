@@ -57,17 +57,19 @@ const DEFAULT_FACTORS: AnalysisResult['factors'] = {
   encouragesEngagement: false,
 };
 
-const normalizeResult = (raw: any): AnalysisResult => {
-  const safeFactors =
-    raw && typeof raw === 'object' && 'factors' in raw && raw.factors && typeof raw.factors === 'object'
-      ? raw.factors
+const normalizeResult = (raw: unknown): AnalysisResult => {
+  const rawObj = raw as Record<string, unknown>;
+  
+  const safeFactors: Partial<AnalysisResult['factors']> =
+    rawObj && typeof rawObj === 'object' && 'factors' in rawObj && rawObj.factors && typeof rawObj.factors === 'object'
+      ? (rawObj.factors as Partial<AnalysisResult['factors']>)
       : {};
 
   return {
-    slopScore: typeof raw?.slopScore === 'number' ? raw.slopScore : 0,
-    summary: typeof raw?.summary === 'string' ? raw.summary : '',
-    recommendations: Array.isArray(raw?.recommendations)
-      ? raw.recommendations.filter((item: unknown) => typeof item === 'string')
+    slopScore: typeof rawObj?.slopScore === 'number' ? rawObj.slopScore : 0,
+    summary: typeof rawObj?.summary === 'string' ? rawObj.summary : '',
+    recommendations: Array.isArray(rawObj?.recommendations)
+      ? rawObj.recommendations.filter((item: unknown) => typeof item === 'string')
       : [],
     factors: {
       ...DEFAULT_FACTORS,

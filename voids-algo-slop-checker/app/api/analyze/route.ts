@@ -143,7 +143,11 @@ Provide your analysis in JSON format with EXACTLY this structure:
   "recommendations": ["Array of specific improvements tailored to this post"]
 }`;
 
-    const userContent: Array<any> = [
+    type ContentItem = 
+      | { type: 'text'; text: string }
+      | { type: 'image_url'; image_url: { url: string } };
+
+    const userContent: ContentItem[] = [
       {
         type: 'text',
         text: `Analyze this X post payload. Display Name: ${displayName}\nPost: ${post}`,
