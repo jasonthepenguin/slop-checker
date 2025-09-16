@@ -595,7 +595,7 @@ export default function PostAnalyzer() {
                   @JasonBotterill3
                 </p>
                 <p className="text-xs text-yellow-500/60 mt-1 font-medium tracking-wider group-hover:text-yellow-400/80 transition-colors">
-                  ☆ DIVINE ARCHITECT ☆
+                  ☆ DIVINE VIBE CODER ☆
                 </p>
               </div>
             </a>
