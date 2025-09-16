@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { AlertCircle, CheckCircle, XCircle, TrendingUp, Loader2, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 
@@ -79,9 +79,62 @@ const normalizeResult = (raw: any): AnalysisResult => {
 export default function PostAnalyzer() {
   const [displayName, setDisplayName] = useState('');
   const [post, setPost] = useState('');
+  const [imageData, setImageData] = useState<string | null>(null);
+  const [imageName, setImageName] = useState('');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState('');
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setError('');
+
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      setImageData(null);
+      setImageName('');
+      return;
+    }
+
+    const maxSize = 200 * 1024; // 200KB limit keeps payload manageable for analysis
+    if (file.size > maxSize) {
+      setError('Image must be 200KB or smaller.');
+      setImageData(null);
+      setImageName('');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const result = typeof reader.result === 'string' ? reader.result : null;
+      setImageData(result);
+      setImageName(file.name);
+    };
+
+    reader.onerror = () => {
+      setError('Failed to read the selected image. Please try another file.');
+      setImageData(null);
+      setImageName('');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    };
+
+    reader.readAsDataURL(file);
+  };
+
+  const clearImage = () => {
+    setImageData(null);
+    setImageName('');
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  };
 
   const analyzePost = async () => {
     if (!displayName.trim() || !post.trim()) {
@@ -92,6 +145,7 @@ export default function PostAnalyzer() {
     setLoading(true);
     setError('');
     setResult(null);
+    const imagePayload = imageData ? { name: imageName, dataUrl: imageData } : null;
 
     try {
       const response = await fetch('/api/analyze', {
@@ -99,7 +153,7 @@ export default function PostAnalyzer() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ post, displayName }),
+        body: JSON.stringify({ post, displayName, image: imagePayload }),
       });
 
       const raw = await response.json();
@@ -235,6 +289,44 @@ export default function PostAnalyzer() {
                 onChange={(e) => setDisplayName(e.target.value)}
                 maxLength={50}
               />
+            </div>
+
+            <div>
+              <label htmlFor="image" className="block text-sm font-medium text-purple-300 mb-2">
+                Optional Image
+              </label>
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                <input
+                  id="image"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  ref={fileInputRef}
+                  className="text-sm text-gray-300 file:mr-3 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-purple-600/80 file:text-white hover:file:bg-purple-600"
+                />
+                {imageData && (
+                  <button
+                    type="button"
+                    onClick={clearImage}
+                    className="text-xs sm:text-sm text-red-300 hover:text-red-200"
+                  >
+                    Remove image
+                  </button>
+                )}
+              </div>
+              {imageData && (
+                <div className="mt-3 bg-slate-800/50 border border-purple-500/20 rounded-lg p-3">
+                  <p className="text-xs sm:text-sm text-gray-300 mb-2 break-words">{imageName || 'Selected image'}</p>
+                  <div className="relative w-full max-w-xs">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={imageData}
+                      alt="Selected preview"
+                      className="w-full h-auto rounded-md border border-purple-500/20"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             <div>

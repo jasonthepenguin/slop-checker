@@ -28,7 +28,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { post, displayName } = await request.json();
+    const { post, displayName, image } = await request.json();
 
     if (!post || typeof post !== 'string') {
       return NextResponse.json({ error: 'Invalid post content' }, { status: 400 });
@@ -50,13 +50,33 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Display name exceeds 50 character limit' }, { status: 400 });
     }
 
-    const systemPrompt = `You are an X (Twitter) algorithm expert. Analyze the provided JSON payload and rate the content based on these criteria. The payload has this shape:
+    if (image && typeof image !== 'object') {
+      return NextResponse.json({ error: 'Invalid image payload' }, { status: 400 });
+    }
+
+    if (image?.dataUrl && typeof image.dataUrl !== 'string') {
+      return NextResponse.json({ error: 'Invalid image data' }, { status: 400 });
+    }
+
+    if (image?.name && typeof image.name !== 'string') {
+      return NextResponse.json({ error: 'Invalid image name' }, { status: 400 });
+    }
+
+    if (image?.dataUrl && image.dataUrl.length > 350_000) {
+      return NextResponse.json({ error: 'Image data is too large. Please use an image under roughly 200KB.' }, { status: 400 });
+    }
+
+    const systemPrompt = `You are an X (Twitter) algorithm expert. Analyze the provided post information and rate the content based on these criteria. The text payload has this shape:
 {
   "post": "<body of the post>",
-  "displayName": "<author's display name>"
+  "displayName": "<author's display name>",
+  "image": {
+    "name": "<original file name>",
+    "dataUrl": "<optional base64 data URL string or null>"
+  } | null
 }
 
-Apply the rules below considering BOTH the post body and the supplied display name:
+Apply the rules below considering the post body, the supplied display name, and any accompanying image:
 
 TEXT FORMATTING & READABILITY (negative if present):
 - All caps "shouting" text (except clear acronyms)
@@ -92,6 +112,8 @@ POSITIVE FACTORS (decrease the slop score):
 - Original ideas or perspectives
 - Encourages meaningful engagement (asks good questions, invites discussion)
 
+If an image is included, evaluate it for spammy overlays, offensive content, NSFW imagery, or engagement-baiting memes. If the image data cannot be interpreted, state that limitation in the summary and base the score on the available textual signals only.
+
 Provide your analysis in JSON format with EXACTLY this structure:
 {
   "slopScore": number from 0-100 (0 = excellent, 100 = terrible algo slop),
@@ -121,11 +143,34 @@ Provide your analysis in JSON format with EXACTLY this structure:
   "recommendations": ["Array of specific improvements tailored to this post"]
 }`;
 
+    const userContent: Array<any> = [
+      {
+        type: 'text',
+        text: `Analyze this X post payload. Display Name: ${displayName}\nPost: ${post}`,
+      },
+    ];
+
+    if (image) {
+      userContent.push({
+        type: 'text',
+        text: `Image metadata: ${image.name || 'unnamed file'}.`,
+      });
+
+      if (image.dataUrl) {
+        userContent.push({
+          type: 'image_url',
+          image_url: {
+            url: image.dataUrl,
+          },
+        });
+      }
+    }
+
     const completion = await openai.chat.completions.create({
       model: 'gpt-5-chat-latest',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: JSON.stringify({ post, displayName }) }
+        { role: 'user', content: userContent }
       ],
       response_format: { type: 'json_object' },
       temperature: 0.3,
