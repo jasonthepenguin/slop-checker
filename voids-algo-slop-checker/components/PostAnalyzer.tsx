@@ -457,16 +457,103 @@ export default function PostAnalyzer() {
             </div>
           </div>
 
-          <div className="mt-6 flex justify-center items-center gap-6 sm:gap-12">
+          <div className="mt-6 flex justify-center items-center gap-8 sm:gap-16">
+            {/* Jason's Angelic Design */}
             <a
               href="https://x.com/JasonBotterill3"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative"
             >
-              <div className="absolute -inset-2 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-md opacity-0 group-hover:opacity-75 transition-opacity duration-300"></div>
-              <div className="relative flex flex-col items-center gap-2">
-                <div className="relative w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-400 transition-all group-hover:scale-110 duration-300">
+              {/* Angelic Container */}
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40">
+                {/* Holy glow effect */}
+                <div className="absolute inset-0">
+                  <div className="absolute inset-0 bg-yellow-400/10 rounded-full blur-3xl group-hover:bg-yellow-400/20 transition-all duration-700"></div>
+                  <div className="absolute inset-2 bg-cyan-400/20 rounded-full blur-2xl group-hover:bg-cyan-300/30 transition-all duration-700"></div>
+                </div>
+
+                {/* Halo and Wings SVG */}
+                <svg
+                  className="absolute inset-0 w-full h-full transition-transform duration-700 group-hover:rotate-12"
+                  viewBox="0 0 200 200"
+                >
+                  {/* Halo */}
+                  <ellipse
+                    cx="100"
+                    cy="30"
+                    rx="40"
+                    ry="12"
+                    fill="none"
+                    stroke="url(#angelicGradient)"
+                    strokeWidth="2"
+                    className="opacity-70 group-hover:opacity-100 transition-opacity"
+                  />
+                  <ellipse
+                    cx="100"
+                    cy="30"
+                    rx="40"
+                    ry="12"
+                    fill="url(#angelicGradient)"
+                    className="opacity-20 group-hover:opacity-30 transition-opacity"
+                  />
+
+                  {/* Left Wing */}
+                  <path
+                    d="M 40,80 Q 10,70 5,100 Q 10,120 30,110 Q 20,130 40,140 Q 50,120 60,100"
+                    fill="url(#wingsGradient)"
+                    className="opacity-40 group-hover:opacity-60 transition-all duration-500"
+                  />
+
+                  {/* Right Wing */}
+                  <path
+                    d="M 160,80 Q 190,70 195,100 Q 190,120 170,110 Q 180,130 160,140 Q 150,120 140,100"
+                    fill="url(#wingsGradient)"
+                    className="opacity-40 group-hover:opacity-60 transition-all duration-500"
+                  />
+
+                  {/* Radiating light rays */}
+                  <g className="opacity-30 group-hover:opacity-50 transition-opacity">
+                    <line x1="100" y1="100" x2="100" y2="20" stroke="url(#angelicGradient)" strokeWidth="1" />
+                    <line x1="100" y1="100" x2="150" y2="50" stroke="url(#angelicGradient)" strokeWidth="1" />
+                    <line x1="100" y1="100" x2="150" y2="150" stroke="url(#angelicGradient)" strokeWidth="1" />
+                    <line x1="100" y1="100" x2="50" y2="150" stroke="url(#angelicGradient)" strokeWidth="1" />
+                    <line x1="100" y1="100" x2="50" y2="50" stroke="url(#angelicGradient)" strokeWidth="1" />
+                  </g>
+
+                  {/* Gradient definitions */}
+                  <defs>
+                    <linearGradient id="angelicGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#fbbf24" />
+                      <stop offset="50%" stopColor="#60a5fa" />
+                      <stop offset="100%" stopColor="#fbbf24" />
+                    </linearGradient>
+                    <radialGradient id="wingsGradient">
+                      <stop offset="0%" stopColor="#ffffff" stopOpacity="0.8" />
+                      <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.3" />
+                    </radialGradient>
+                  </defs>
+
+                  {/* Floating stars */}
+                  <g className="animate-pulse">
+                    <circle cx="70" cy="60" r="2" fill="#fbbf24" opacity="0.6">
+                      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="130" cy="60" r="2" fill="#60a5fa" opacity="0.6">
+                      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" begin="1s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="160" cy="100" r="2" fill="#fbbf24" opacity="0.6">
+                      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" begin="2s" repeatCount="indefinite" />
+                    </circle>
+                    <circle cx="40" cy="100" r="2" fill="#60a5fa" opacity="0.6">
+                      <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" begin="0.5s" repeatCount="indefinite" />
+                    </circle>
+                  </g>
+                </svg>
+
+                {/* Profile image in center */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-yellow-400/50 group-hover:ring-yellow-400 transition-all group-hover:scale-110 duration-300 group-hover:shadow-[0_0_30px_rgba(250,204,21,0.4)]">
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-200/30 to-cyan-200/30 mix-blend-screen z-10"></div>
                   <Image
                     src="/jb.jpg"
                     alt="Jason Botterill"
@@ -474,29 +561,112 @@ export default function PostAnalyzer() {
                     className="object-cover"
                   />
                 </div>
-                <div className="text-center">
-                  <p className="text-xs sm:text-sm text-fuchsia-300 group-hover:text-fuchsia-200 transition-colors font-medium">
-                    @JasonBotterill3
-                  </p>
-                </div>
+
+                {/* Floating angelic symbols */}
+                <div className="absolute -top-2 -left-2 text-yellow-400/60 text-sm animate-pulse">✧</div>
+                <div className="absolute -top-2 -right-2 text-cyan-400/60 text-sm animate-pulse" style={{ animationDelay: '0.5s' }}>✦</div>
+                <div className="absolute -bottom-2 -left-2 text-yellow-400/60 text-sm animate-pulse" style={{ animationDelay: '1s' }}>⟡</div>
+                <div className="absolute -bottom-2 -right-2 text-cyan-400/60 text-sm animate-pulse" style={{ animationDelay: '1.5s' }}>✧</div>
+              </div>
+
+              {/* Name below */}
+              <div className="text-center mt-4">
+                <p className="text-xs sm:text-sm font-bold bg-gradient-to-r from-yellow-400 via-cyan-400 to-yellow-400 bg-clip-text text-transparent group-hover:from-yellow-300 group-hover:via-cyan-300 group-hover:to-yellow-300 transition-all duration-500">
+                  @JasonBotterill3
+                </p>
+                <p className="text-xs text-yellow-500/60 mt-1 font-medium tracking-wider group-hover:text-yellow-400/80 transition-colors">
+                  ☆ DIVINE ARCHITECT ☆
+                </p>
               </div>
             </a>
 
-            {/* Cosmic connector */}
-            <div className="relative">
-              <div className="w-8 sm:w-12 h-0.5 bg-gradient-to-r from-purple-500/50 via-pink-500/50 to-blue-500/50"></div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-white rounded-full animate-pulse"></div>
+            {/* Balance of Light and Dark connector */}
+            <div className="relative flex items-center">
+              <div className="w-12 sm:w-16 h-0.5 bg-gradient-to-r from-yellow-400/50 via-purple-500/50 to-red-500/50"></div>
+              <div className="absolute left-1/2 -translate-x-1/2">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-red-600 animate-pulse">
+                  <div className="w-full h-full rounded-full bg-gradient-to-br from-transparent via-purple-600/50 to-transparent animate-spin" style={{ animationDuration: '4s' }}></div>
+                </div>
+              </div>
             </div>
 
+            {/* Void's Demonic Design */}
             <a
               href="https://x.com/VoidStateKate"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative"
             >
-              <div className="absolute -inset-2 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full blur-md opacity-0 group-hover:opacity-75 transition-opacity duration-300"></div>
-              <div className="relative flex flex-col items-center gap-2">
-                <div className="relative w-14 h-14 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-purple-500/50 group-hover:ring-purple-400 transition-all group-hover:scale-110 duration-300">
+              {/* Pentagram Container */}
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40">
+                {/* Animated demonic glow */}
+                <div className="absolute inset-0 animate-pulse">
+                  <div className="absolute inset-0 bg-red-600/20 rounded-full blur-3xl"></div>
+                  <div className="absolute inset-2 bg-purple-600/30 rounded-full blur-2xl"></div>
+                </div>
+
+                {/* Pentagram SVG */}
+                <svg
+                  className="absolute inset-0 w-full h-full transition-transform duration-1000 group-hover:rotate-[360deg]"
+                  viewBox="0 0 200 200"
+                >
+                  {/* Outer circle */}
+                  <circle
+                    cx="100"
+                    cy="100"
+                    r="95"
+                    fill="none"
+                    stroke="url(#pentagramGradient)"
+                    strokeWidth="2"
+                    className="opacity-50"
+                  />
+
+                  {/* Inner pentagram star */}
+                  <path
+                    d="M100,10 L130.9,78.8 L199.5,78.8 L145.3,122.4 L164.5,191.2 L100,147.6 L35.5,191.2 L54.7,122.4 L0.5,78.8 L69.1,78.8 Z"
+                    fill="none"
+                    stroke="url(#pentagramGradient)"
+                    strokeWidth="2"
+                    className="group-hover:stroke-red-400 transition-all duration-500"
+                  />
+
+                  {/* Connecting lines for pentagram */}
+                  <line x1="100" y1="10" x2="164.5" y2="191.2" stroke="url(#pentagramGradient)" strokeWidth="1" opacity="0.5" />
+                  <line x1="164.5" y1="191.2" x2="69.1" y2="78.8" stroke="url(#pentagramGradient)" strokeWidth="1" opacity="0.5" />
+                  <line x1="69.1" y1="78.8" x2="199.5" y2="78.8" stroke="url(#pentagramGradient)" strokeWidth="1" opacity="0.5" />
+                  <line x1="199.5" y1="78.8" x2="35.5" y2="191.2" stroke="url(#pentagramGradient)" strokeWidth="1" opacity="0.5" />
+                  <line x1="35.5" y1="191.2" x2="100" y2="10" stroke="url(#pentagramGradient)" strokeWidth="1" opacity="0.5" />
+
+                  {/* Gradient definition */}
+                  <defs>
+                    <linearGradient id="pentagramGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#dc2626" className="animate-pulse" />
+                      <stop offset="50%" stopColor="#9333ea" />
+                      <stop offset="100%" stopColor="#dc2626" className="animate-pulse" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Glowing dots at pentagram points */}
+                  <circle cx="100" cy="10" r="3" fill="#dc2626" className="animate-pulse">
+                    <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="199.5" cy="78.8" r="3" fill="#9333ea" className="animate-pulse">
+                    <animate attributeName="r" values="3;5;3" dur="2s" begin="0.4s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="164.5" cy="191.2" r="3" fill="#dc2626" className="animate-pulse">
+                    <animate attributeName="r" values="3;5;3" dur="2s" begin="0.8s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="35.5" cy="191.2" r="3" fill="#9333ea" className="animate-pulse">
+                    <animate attributeName="r" values="3;5;3" dur="2s" begin="1.2s" repeatCount="indefinite" />
+                  </circle>
+                  <circle cx="69.1" cy="78.8" r="3" fill="#dc2626" className="animate-pulse">
+                    <animate attributeName="r" values="3;5;3" dur="2s" begin="1.6s" repeatCount="indefinite" />
+                  </circle>
+                </svg>
+
+                {/* Profile image in center */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden ring-2 ring-red-600/50 group-hover:ring-red-500 transition-all group-hover:scale-110 duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-br from-red-900/50 to-purple-900/50 mix-blend-overlay z-10"></div>
                   <Image
                     src="/void.jpg"
                     alt="VoidStateKate"
@@ -504,12 +674,22 @@ export default function PostAnalyzer() {
                     className="object-cover"
                   />
                 </div>
-                <div className="text-center">
-                  <p className="text-xs sm:text-sm text-sky-300 group-hover:text-sky-200 transition-colors font-medium">
-                    @VoidStateKate
-                  </p>
-                  {/* Removed role label per request */}
-                </div>
+
+                {/* Floating demonic symbols */}
+                <div className="absolute -top-2 -left-2 text-red-600/40 text-xs animate-pulse">✦</div>
+                <div className="absolute -top-2 -right-2 text-purple-600/40 text-xs animate-pulse" style={{ animationDelay: '0.5s' }}>☥</div>
+                <div className="absolute -bottom-2 -left-2 text-red-600/40 text-xs animate-pulse" style={{ animationDelay: '1s' }}>⛥</div>
+                <div className="absolute -bottom-2 -right-2 text-purple-600/40 text-xs animate-pulse" style={{ animationDelay: '1.5s' }}>☿</div>
+              </div>
+
+              {/* Name below pentagram */}
+              <div className="text-center mt-4">
+                <p className="text-xs sm:text-sm font-bold bg-gradient-to-r from-red-500 via-purple-500 to-red-500 bg-clip-text text-transparent group-hover:from-red-400 group-hover:via-purple-400 group-hover:to-red-400 transition-all duration-500">
+                  @VoidStateKate
+                </p>
+                <p className="text-xs text-red-600/60 mt-1 font-medium tracking-wider group-hover:text-red-500/80 transition-colors">
+                  ☠ VOID SUMMONER ☠
+                </p>
               </div>
             </a>
           </div>
