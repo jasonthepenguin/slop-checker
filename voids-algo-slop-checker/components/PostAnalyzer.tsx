@@ -498,19 +498,37 @@ export default function PostAnalyzer() {
                     className="opacity-20 group-hover:opacity-30 transition-opacity"
                   />
 
-                  {/* Left Wing */}
-                  <path
-                    d="M 40,80 Q 10,70 5,100 Q 10,120 30,110 Q 20,130 40,140 Q 50,120 60,100"
-                    fill="url(#wingsGradient)"
-                    className="opacity-40 group-hover:opacity-60 transition-all duration-500"
-                  />
+                  {/* Left Wing - Detailed feathered design */}
+                  <g className="opacity-50 group-hover:opacity-70 transition-all duration-500">
+                    {/* Main wing shape */}
+                    <path
+                      d="M 50,90 C 20,85 10,95 5,105 C 8,115 15,118 25,115 L 30,120 C 35,125 40,125 45,120 L 50,125 C 55,128 60,125 65,120 L 70,115 C 72,110 70,105 68,100 L 65,95 C 60,92 55,90 50,90 Z"
+                      fill="url(#wingsGradient)"
+                      stroke="url(#angelicGradient)"
+                      strokeWidth="0.5"
+                    />
+                    {/* Wing feather details */}
+                    <path d="M 25,105 L 35,100" stroke="url(#angelicGradient)" strokeWidth="0.5" opacity="0.5" />
+                    <path d="M 30,110 L 40,105" stroke="url(#angelicGradient)" strokeWidth="0.5" opacity="0.5" />
+                    <path d="M 35,115 L 45,110" stroke="url(#angelicGradient)" strokeWidth="0.5" opacity="0.5" />
+                    <path d="M 40,120 L 50,115" stroke="url(#angelicGradient)" strokeWidth="0.5" opacity="0.5" />
+                  </g>
 
-                  {/* Right Wing */}
-                  <path
-                    d="M 160,80 Q 190,70 195,100 Q 190,120 170,110 Q 180,130 160,140 Q 150,120 140,100"
-                    fill="url(#wingsGradient)"
-                    className="opacity-40 group-hover:opacity-60 transition-all duration-500"
-                  />
+                  {/* Right Wing - Detailed feathered design */}
+                  <g className="opacity-50 group-hover:opacity-70 transition-all duration-500">
+                    {/* Main wing shape */}
+                    <path
+                      d="M 150,90 C 180,85 190,95 195,105 C 192,115 185,118 175,115 L 170,120 C 165,125 160,125 155,120 L 150,125 C 145,128 140,125 135,120 L 130,115 C 128,110 130,105 132,100 L 135,95 C 140,92 145,90 150,90 Z"
+                      fill="url(#wingsGradient)"
+                      stroke="url(#angelicGradient)"
+                      strokeWidth="0.5"
+                    />
+                    {/* Wing feather details */}
+                    <path d="M 175,105 L 165,100" stroke="url(#angelicGradient)" strokeWidth="0.5" opacity="0.5" />
+                    <path d="M 170,110 L 160,105" stroke="url(#angelicGradient)" strokeWidth="0.5" opacity="0.5" />
+                    <path d="M 165,115 L 155,110" stroke="url(#angelicGradient)" strokeWidth="0.5" opacity="0.5" />
+                    <path d="M 160,120 L 150,115" stroke="url(#angelicGradient)" strokeWidth="0.5" opacity="0.5" />
+                  </g>
 
                   {/* Radiating light rays */}
                   <g className="opacity-30 group-hover:opacity-50 transition-opacity">
@@ -580,15 +598,6 @@ export default function PostAnalyzer() {
               </div>
             </a>
 
-            {/* Balance of Light and Dark connector */}
-            <div className="relative flex items-center">
-              <div className="w-12 sm:w-16 h-0.5 bg-gradient-to-r from-yellow-400/50 via-purple-500/50 to-red-500/50"></div>
-              <div className="absolute left-1/2 -translate-x-1/2">
-                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-yellow-400 to-red-600 animate-pulse">
-                  <div className="w-full h-full rounded-full bg-gradient-to-br from-transparent via-purple-600/50 to-transparent animate-spin" style={{ animationDuration: '4s' }}></div>
-                </div>
-              </div>
-            </div>
 
             {/* Void's Demonic Design */}
             <a
