@@ -1,32 +1,38 @@
 import { NextRequest } from 'next/server';
 import { ratelimit } from './redis';
+import { getClientIdentifier } from './requestIdentity';
 
 export async function checkRateLimit(request: NextRequest) {
-  // If rate limiting is not configured, allow all requests
   if (!ratelimit) {
-    console.warn('Rate limiting is not configured. Set UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN environment variables.');
     return {
-      success: true,
-      limit: 999,
-      reset: Date.now() + 30000,
-      remaining: 999,
-      retryAfter: 0
+      success: false,
+      limit: 0,
+      reset: Date.now(),
+      remaining: 0,
+      retryAfter: 30,
     };
   }
 
-  const ip = request.headers.get('x-forwarded-for') ??
-             request.headers.get('x-real-ip') ??
-             'anonymous';
+  const identifier = getClientIdentifier(request);
 
-  const identifier = ip;
+  try {
+    const { success, limit, reset, remaining } = await ratelimit.limit(identifier);
 
-  const { success, limit, reset, remaining } = await ratelimit.limit(identifier);
-
-  return {
-    success,
-    limit,
-    reset,
-    remaining,
-    retryAfter: reset ? Math.floor((reset - Date.now()) / 1000) : 0
-  };
+    return {
+      success,
+      limit,
+      reset,
+      remaining,
+      retryAfter: reset ? Math.max(Math.floor((reset - Date.now()) / 1000), 0) : 0,
+    };
+  } catch (error) {
+    console.error('Rate limit evaluation failed', error);
+    return {
+      success: false,
+      limit: 0,
+      reset: Date.now(),
+      remaining: 0,
+      retryAfter: 60,
+    };
+  }
 }

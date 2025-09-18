@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { checkRateLimit } from '@/lib/rateLimit';
+import { verifySessionToken } from '@/lib/session';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -8,12 +9,24 @@ const openai = new OpenAI({
 
 export async function POST(request: NextRequest) {
   try {
+    let sessionCheck;
+    try {
+      sessionCheck = verifySessionToken(request);
+    } catch (error) {
+      console.error('Session verification failure:', error);
+      return NextResponse.json({ error: 'Session unavailable' }, { status: 503 });
+    }
+
+    if (!sessionCheck.valid) {
+      return NextResponse.json({ error: sessionCheck.error ?? 'Unauthorized request' }, { status: 401 });
+    }
+
     const rateLimitResult = await checkRateLimit(request);
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
         {
-          error: 'Too many requests. Please wait 30 seconds between analyses.',
+          error: 'Too many requests. Please wait before trying again.',
           retryAfter: rateLimitResult.retryAfter
         },
         {
@@ -65,6 +78,13 @@ export async function POST(request: NextRequest) {
     // Base64 inflates payload size ~33%, so 2MB binary ≈ 2.8M chars
     if (image?.dataUrl && image.dataUrl.length > 2_900_000) {
       return NextResponse.json({ error: 'Image data is too large. Please use an image under roughly 2MB.' }, { status: 400 });
+    }
+
+    if (image?.dataUrl) {
+      const imageDataUrlPattern = /^data:image\/(png|jpeg|jpg|webp|gif|bmp);base64,/i;
+      if (!imageDataUrlPattern.test(image.dataUrl)) {
+        return NextResponse.json({ error: 'Unsupported image format. Provide a base64-encoded PNG, JPEG, WEBP, GIF, or BMP.' }, { status: 400 });
+      }
     }
 
     const systemPrompt = `You are an X (Twitter) algorithm expert. Analyze the provided post information and rate the content based on these criteria. The text payload has this shape:

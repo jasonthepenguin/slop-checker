@@ -1,8 +1,9 @@
 'use client';
 
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { AlertCircle, CheckCircle, XCircle, TrendingUp, Loader2, Sparkles } from 'lucide-react';
 import Image from 'next/image';
+import { SESSION_HEADER_NAME } from '@/lib/sessionConstants';
 
 interface AnalysisResult {
   slopScore: number;
@@ -78,6 +79,9 @@ const normalizeResult = (raw: unknown): AnalysisResult => {
   };
 };
 
+const toRecord = (value: unknown): Record<string, unknown> | null =>
+  typeof value === 'object' && value !== null ? (value as Record<string, unknown>) : null;
+
 export default function PostAnalyzer() {
   const [displayName, setDisplayName] = useState('');
   const [post, setPost] = useState('');
@@ -86,7 +90,50 @@ export default function PostAnalyzer() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState('');
+  const [sessionToken, setSessionToken] = useState<string | null>(null);
+  const [tokenLoading, setTokenLoading] = useState(true);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const sessionTokenRef = useRef<string | null>(null);
+
+  const fetchSessionToken = useCallback(async () => {
+    setTokenLoading(true);
+    try {
+      const response = await fetch('/api/session', {
+        method: 'GET',
+        credentials: 'include',
+        cache: 'no-store',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to obtain session token');
+      }
+
+      const data = await response.json();
+      if (!data || typeof data.token !== 'string') {
+        throw new Error('Session token response malformed');
+      }
+
+      setSessionToken(data.token);
+      sessionTokenRef.current = data.token;
+      return data.token as string;
+    } catch (err) {
+      console.error('Failed to refresh session token', err);
+      setSessionToken(null);
+      sessionTokenRef.current = null;
+      setError('Unable to prepare an analysis session. Please refresh the page and try again.');
+      return null;
+    } finally {
+      setTokenLoading(false);
+    }
+  }, [setError, setSessionToken, setTokenLoading]);
+
+  useEffect(() => {
+    fetchSessionToken();
+  }, [fetchSessionToken]);
+
+  useEffect(() => {
+    sessionTokenRef.current = sessionToken;
+  }, [sessionToken]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     setError('');
@@ -144,36 +191,62 @@ export default function PostAnalyzer() {
       return;
     }
 
-    setLoading(true);
     setError('');
     setResult(null);
+    let tokenToUse = sessionTokenRef.current ?? sessionToken;
+    if (!tokenToUse) {
+      tokenToUse = await fetchSessionToken();
+      if (!tokenToUse) {
+        return;
+      }
+    }
+
+    setLoading(true);
     const imagePayload = imageData ? { name: imageName, dataUrl: imageData } : null;
 
     try {
       const response = await fetch('/api/analyze', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          [SESSION_HEADER_NAME]: tokenToUse,
         },
         body: JSON.stringify({ post, displayName, image: imagePayload }),
       });
 
-      const raw = await response.json();
+      let parsed: unknown = null;
+      try {
+        parsed = await response.json();
+      } catch (parseError) {
+        console.error('Failed to parse analysis response', parseError);
+      }
+
+      const payload = toRecord(parsed);
 
       if (!response.ok) {
         if (response.status === 429) {
-          const retryAfter = raw.retryAfter || 30;
+          const retryValue = payload?.['retryAfter'];
+          const retryAfter = typeof retryValue === 'number' ? retryValue : 30;
           setError(`Too many requests. Please wait ${retryAfter} seconds before trying again.`);
           setResult(null);
-        } else {
-          throw new Error(raw.error || 'Analysis failed');
+          return;
         }
-      } else {
-        setResult(normalizeResult(raw));
+
+        if (response.status === 401) {
+          await fetchSessionToken();
+          setError('Your session expired. Please try again.');
+          return;
+        }
+
+        const errorMessage = payload?.['error'];
+        throw new Error(typeof errorMessage === 'string' ? errorMessage : 'Analysis failed');
       }
+
+      setResult(normalizeResult(parsed ?? {}));
     } catch (err) {
-      setError('Failed to analyze post. Please try again.');
       console.error(err);
+      setError('Failed to analyze post. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -358,13 +431,18 @@ export default function PostAnalyzer() {
 
             <button
               onClick={analyzePost}
-              disabled={loading || !displayName.trim() || !post.trim()}
+              disabled={loading || tokenLoading || !displayName.trim() || !post.trim()}
               className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-2.5 sm:py-3 px-4 rounded-lg font-semibold hover:from-purple-700 hover:to-blue-700 disabled:from-gray-700 disabled:to-gray-700 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2 shadow-lg text-sm sm:text-base"
             >
               {loading ? (
                 <>
                   <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
                   Analyzing...
+                </>
+              ) : tokenLoading ? (
+                <>
+                  <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
+                  Preparing...
                 </>
               ) : (
                 <>
