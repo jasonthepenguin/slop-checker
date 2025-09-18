@@ -99,9 +99,9 @@ export default function PostAnalyzer() {
       return;
     }
 
-    const maxSize = 200 * 1024; // 200KB limit keeps payload manageable for analysis
+    const maxSize = 2 * 1024 * 1024; // 2MB limit keeps payload reasonable for analysis
     if (file.size > maxSize) {
-      setError('Image must be 200KB or smaller.');
+      setError('Image must be 2MB or smaller.');
       setImageData(null);
       setImageName('');
       if (fileInputRef.current) {

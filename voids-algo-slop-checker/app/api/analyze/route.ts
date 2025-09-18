@@ -62,8 +62,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid image name' }, { status: 400 });
     }
 
-    if (image?.dataUrl && image.dataUrl.length > 350_000) {
-      return NextResponse.json({ error: 'Image data is too large. Please use an image under roughly 200KB.' }, { status: 400 });
+    // Base64 inflates payload size ~33%, so 2MB binary ≈ 2.8M chars
+    if (image?.dataUrl && image.dataUrl.length > 2_900_000) {
+      return NextResponse.json({ error: 'Image data is too large. Please use an image under roughly 2MB.' }, { status: 400 });
     }
 
     const systemPrompt = `You are an X (Twitter) algorithm expert. Analyze the provided post information and rate the content based on these criteria. The text payload has this shape:
